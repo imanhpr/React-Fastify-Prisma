@@ -27,6 +27,16 @@ export async function postUser(
     };
     rep.status(200).send(response);
   } catch (err) {
-    rep.status(500).send({ message: "Internal Server Error" });
+    const errSet = new Set(["User_username_key", "User_email_key"]);
+    for (const uniqueCheck of errSet) {
+      if (RegExp(uniqueCheck).test((err as Error).message)) {
+        const msg = uniqueCheck.split("_")[1];
+        return rep
+          .status(409)
+          .send({ message: `This ${msg} is already exist` });
+      }
+    }
+    rep.log.error((err as Error).message);
+    return rep.status(500).send({ message: "Internal Server Error" });
   }
 }
