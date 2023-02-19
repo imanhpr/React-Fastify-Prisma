@@ -1,5 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UserSchemaResponseType, UserSchemaType } from "../schemas/User.schema";
+import {
+  UserLoginResponseSchemaType,
+  UserLoginSchemaType,
+  UserSchemaResponseType,
+  UserSchemaType,
+} from "../schemas/User.schema";
 
 import { app } from "../app";
 import { prisma } from "../utils/database";
@@ -25,7 +30,7 @@ export async function postUser(
       age: user.age,
       id: user.id,
     };
-    rep.status(200).send(response);
+    rep.status(201).send(response);
   } catch (err) {
     const errSet = new Set(["User_username_key", "User_email_key"]);
     for (const uniqueCheck of errSet) {
@@ -39,4 +44,29 @@ export async function postUser(
     rep.log.error((err as Error).message);
     return rep.status(500).send({ message: "Internal Server Error" });
   }
+}
+
+export async function loginUser(
+  req: FastifyRequest<{
+    Body: UserLoginSchemaType;
+    Reply: UserLoginResponseSchemaType;
+  }>,
+  rep: FastifyReply
+) {
+  const { email, password } = req.body;
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (user !== null && (await app.bcrypt.compare(password, user.password))) {
+    const response: UserLoginResponseSchemaType = {
+      age: user.age,
+      email: user.email,
+      id: user.id,
+      username: user.username,
+    };
+    req.session.set("user", user);
+    req.session.save();
+    return rep.send(response);
+  }
+  return rep
+    .status(401)
+    .send({ message: "There is a problem with your credential" });
 }

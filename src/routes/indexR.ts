@@ -1,6 +1,10 @@
 import { FastifyInstance } from "fastify";
-import { postUser } from "../controllers/indexC";
+import { loginUser, postUser } from "../controllers/indexC";
 import {
+  UserLoginResponseSchema,
+  UserLoginResponseSchemaType,
+  UserLoginSchema,
+  UserLoginSchemaType,
   UserSchema,
   UserSchemaResponse,
   UserSchemaResponseType,
@@ -12,6 +16,19 @@ async function indexRouter(fastify: FastifyInstance) {
     rep.send({ ping: "pong" });
   });
 
+  fastify.post<{
+    Body: UserLoginSchemaType;
+    Reply: UserLoginResponseSchemaType;
+  }>(
+    "/login-user",
+    {
+      schema: {
+        body: UserLoginSchema,
+        response: { 200: UserLoginResponseSchema },
+      },
+    },
+    loginUser
+  );
   fastify.post<{ Body: UserSchemaType; Reply: UserSchemaResponseType }>(
     "/create-user",
     { schema: { body: UserSchema, response: { 200: UserSchemaResponse } } },
