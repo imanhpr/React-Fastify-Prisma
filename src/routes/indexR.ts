@@ -34,6 +34,17 @@ async function indexRouter(fastify: FastifyInstance) {
     { schema: { body: UserSchema, response: { 200: UserSchemaResponse } } },
     postUser
   );
+  fastify.get<{ Reply: UserSchemaResponseType | { message: string } }>(
+    "/profile",
+    { schema: { response: { 200: UserSchemaResponse } } },
+    async (req, rep) => {
+      const user = req.session.get("user");
+      if (!user) {
+        return rep.code(401).send({ message: "first you have to login" });
+      }
+      return rep.send(user as UserSchemaResponseType);
+    }
+  );
 }
 
 export default indexRouter;
