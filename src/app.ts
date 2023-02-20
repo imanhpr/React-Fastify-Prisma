@@ -6,6 +6,7 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
 import { prisma } from "./utils/database";
 import indexRouter from "./routes/indexR";
+import fastifyCors from "@fastify/cors";
 
 export const app = fastify({
   logger: true,
@@ -16,6 +17,10 @@ app.register(fastifyCookie);
 app.register(fastifySession, {
   secret: "1acb34ef11653f5e37fcc108cbf560a54cc81b5df61f576effb4fb7b5b96ee0b",
   cookie: { secure: false },
+});
+app.register(fastifyCors, {
+  credentials: true,
+  origin: "http://localhost:5173",
 });
 app.register(indexRouter);
 
