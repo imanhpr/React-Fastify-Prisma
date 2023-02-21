@@ -7,6 +7,7 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { prisma } from "./utils/database";
 import indexRouter from "./routes/indexR";
 import fastifyCors from "@fastify/cors";
+import { postPublicRouter, postPrivateRouter } from "./routes/postR";
 
 export const app = fastify({
   logger: true,
@@ -23,6 +24,9 @@ app.register(fastifyCors, {
   origin: "http://localhost:5173",
 });
 app.register(indexRouter);
+
+app.register(postPublicRouter, { prefix: "/post" });
+app.register(postPrivateRouter, { prefix: "/post" });
 
 async function main() {
   try {
