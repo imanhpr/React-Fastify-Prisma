@@ -45,6 +45,10 @@ async function indexRouter(fastify: FastifyInstance) {
       return rep.send(user as UserSchemaResponseType);
     }
   );
+  fastify.get("/logout", async (req, rep) => {
+    await req.session.destroy();
+    return rep.send({ message: "success" });
+  });
 }
 
 export default indexRouter;
