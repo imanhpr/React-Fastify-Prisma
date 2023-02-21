@@ -20,9 +20,10 @@ model User {
 }
 
 model Post {
-  id      Int    @id @default(autoincrement())
-  title   String @db.VarChar(255)
-  content String @db.Text
-  user    User   @relation(fields: [user_id], references: [id])
-  user_id Int
+  id         Int      @id @default(autoincrement())
+  title      String   @db.VarChar(255)
+  content    String   @db.Text
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  created_at DateTime @default(now())
 }
