@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  database:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: testpass
+      MYSQL_DATABASE: imanhpr
+  fastify:
+    build: .
+    image: webapp
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://root:testpass@database:3306/imanhpr
+    command: sh run.sh
+    ports:
+      - 8000:8000
+    depends_on:
+      - database

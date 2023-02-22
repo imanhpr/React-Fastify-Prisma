@@ -30,7 +30,11 @@ app.register(postPrivateRouter, { prefix: "/post" });
 
 async function main() {
   try {
-    app.listen({ port: 8000 });
+    if (process.env.NODE_ENV === "production") {
+      app.listen({ port: 8000, host: "0.0.0.0" });
+    } else {
+      app.listen({ port: 8000 });
+    }
   } catch (err) {
     prisma.$disconnect();
     console.log(err);
