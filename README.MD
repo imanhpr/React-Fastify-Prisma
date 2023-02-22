@@ -4,6 +4,10 @@ if you want to run this app first clone this app and after that run `docker-comp
 
 for learning more information about backend api take a look at `api.http` file at the root directory.
 
+1.To run this project you must have typescript 4.9 on your system.
+2.Then run `sh build.sh`
+3.finally run this command `docker-compose up --d`
+
 docker-compose.yaml :
 
 ```yaml
