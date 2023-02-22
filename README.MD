@@ -2,6 +2,8 @@
 
 if you want to run this app first clone this app and after that run `docker-compose up --d`
 
+for learning more information about backend api take a look at `api.http` file at the root directory.
+
 docker-compose.yaml :
 
 ```yaml
