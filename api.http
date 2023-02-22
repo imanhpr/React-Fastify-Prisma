@@ -1,0 +1,43 @@
+# Create a new user on the server.
+POST http://localhost:8000/create-user HTTP/1.1
+Content-Type: application/json
+
+{
+	"username" : "imanhpr221",
+	"email" : "imanhpr@gmail.com",
+	"age" : 23,
+	"password" : "testpass"
+}
+
+###
+# Login to the server
+POST http://localhost:8000/login-user HTTP/1.1
+Content-Type: application/json
+
+{
+	"email" :"imanhpr@gmail.com",
+	"password" : "testpass"
+}
+
+###
+# Get user profile info
+GET http://localhost:8000/profile HTTP/1.1
+
+###
+# Logout the current user
+GET http://localhost:8000/logout HTTP/1.1
+
+###
+
+# Get some posts
+GET http://localhost:8000/post
+
+###
+# Create a new post
+POST http://localhost:8000/post HTTP/1.1
+Content-Type: application/json
+
+{
+	"title" : "test post from iman",
+	"content" : "this is a dummy post by myself"
+}
